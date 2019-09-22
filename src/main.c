@@ -26,7 +26,7 @@ int	main(int ac, char **av)
 	while (++i < ac)
 	{
 		if (valid_extension(av[i], "s"))
-			ft_printf("Valid Extension\n");//assembler(av[i]);
+			assembler(av[i]);
 		else if (valid_extension(av[i], "cor"))
 			ft_printf("Disassembler not implemented\n");
 		else

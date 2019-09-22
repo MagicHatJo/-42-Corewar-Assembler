@@ -15,9 +15,27 @@
 
 #include "libft.h"
 
+#include "op.h"
+
 /*
-** UTIL
+** Structs
 */
-int	valid_extension(char *file, char *ext);
+typedef struct	s_header
+{
+	uint32_t	prog_size;
+	char		prog_name[PROG_NAME_LENGTH + 1];
+	char		comment[COMMENT_LENGTH + 1];
+}				t_header;
+
+/*
+** Functions
+*/
+void	assembler(char* file);
+int		get_header(t_header *h, int fd);
+
+/*
+** Utility
+*/
+int		valid_extension(char *file, char *ext);
 
 #endif

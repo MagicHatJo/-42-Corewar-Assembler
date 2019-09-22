@@ -14,6 +14,8 @@ NAME = asm
 
 SRC =	main \
 		valid_extension \
+		assembler \
+		get_header \
 
 INC =	-I inc \
 		-I ../libft/inc \
