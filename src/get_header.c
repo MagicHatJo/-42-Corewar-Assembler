@@ -31,9 +31,28 @@ static int	get_name(char prog_name[], int fd)
 	return (1);
 }
 
-int			get_header(t_header *h, int fd)
+static int	get_comment(char comment[], int fd)
 {
-	ZERO_CHECK(!get_name(h->prog_name, fd));
-	//get comment
+	char	*line;
+	char	*dq;
+	int		i;
+
+	ZERO_CHECK(!get_next_line(fd, &line));
+	if (!ft_strnequ(line, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING)))
+		return (0);
+	ZERO_CHECK(!(dq = ft_strchr(line, '"')));
+	dq++;
+	i = -1;
+	while (dq[++i] && dq[i] != '"' && i < COMMENT_LENGTH)
+		comment[i] = dq[i];
+	ZERO_CHECK(dq[i] != '"');
+	free(line);
+	return (1);
+}
+
+int			get_header(t_table *table, int fd)
+{
+	ZERO_CHECK(!get_name(table->prog_name, fd));
+	ZERO_CHECK(!(get_comment(table->comment, fd)));
 	return (1);
 }

@@ -16,6 +16,7 @@ SRC =	main \
 		valid_extension \
 		assembler \
 		get_header \
+		get_bytecode \
 
 INC =	-I inc \
 		-I ../libft/inc \

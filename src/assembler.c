@@ -15,7 +15,7 @@
 void	assembler(char *file)
 {
 	int			fd;
-	t_header	header;
+	t_table		table;
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0 || read(fd, &fd, 0) < 0)
@@ -24,11 +24,13 @@ void	assembler(char *file)
 		return ;
 	}
 	ft_printf("Debug: %s opened successfully\n", file);
-	ft_memset(&header, 0, sizeof(t_header));
 
-	if (get_header(&header, fd))
+	ft_memset(&table, 0, sizeof(t_table));
+
+	if (get_header(&table, fd) && get_bytecode(&table, fd))
 	{
 		ft_printf("\033[32mCompiled:\033[0m %s\n", file);
+		//make .cor
 	}
 	else
 		ft_printf("\033[31mError:\033[0m %s %s\n", "Invalid file :", file);
