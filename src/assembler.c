@@ -23,10 +23,8 @@ void	assembler(char *file)
 		ft_printf("\033[31mError:\033[0m %s %s\n", "Unable to open", file);
 		return ;
 	}
-	ft_printf("Debug: %s opened successfully\n", file);
-
 	ft_memset(&table, 0, sizeof(t_table));
-
+	table.commands = initqueue();
 	if (get_header(&table, fd) && get_bytecode(&table, fd))
 	{
 		ft_printf("\033[32mCompiled:\033[0m %s\n", file);

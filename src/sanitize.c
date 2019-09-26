@@ -1,39 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_bytecode.c                                     :+:      :+:    :+:   */
+/*   sanitize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/23 21:54:59 by jochang           #+#    #+#             */
-/*   Updated: 2019/09/23 21:55:00 by jochang          ###   ########.fr       */
+/*   Created: 2019/09/26 05:40:10 by jochang           #+#    #+#             */
+/*   Updated: 2019/09/26 05:40:10 by jochang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-int	get_bytecode(t_table *table, int fd)
+static void	remove_comments(char *line)
 {
-	char	*cmd;
-	t_token	token;
-	t_line	*line;
-	int		i;
+	while (*line && *line != COMMENT_CHAR)
+		line++;
+	if (*line == COMMENT_CHAR)
+		*line = '\0';
+}
 
-	(void)table;
-	i = 1;
-	while (get_next_line(fd, &cmd))
-	{
-		line = ft_memalloc(sizeof(t_line));
-		sanitize(&cmd);
-		ft_printf("%s\n", cmd);
+static void	clean_spaces(char **line)
+{
+	char	*old;
 
-		while ((token = lexer(cmd)).state != NONE)
-		{
-			ft_printf("token : %d : %s\n", token.state, token.content);
-			//parser(&line, token);
-		}
-		free(line);
-		free(cmd);
-	}
-	return (1);
+	old = *line;
+	*line = ft_strtrim(*line);
+	free(old);
+}
+
+void	sanitize(char **line)
+{
+	remove_comments(*line);
+	clean_spaces(line);
 }

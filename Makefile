@@ -17,6 +17,10 @@ SRC =	main \
 		assembler \
 		get_header \
 		get_bytecode \
+		queue \
+		op \
+		sanitize \
+		lexer \
 
 INC =	-I inc \
 		-I ../libft/inc \
@@ -73,3 +77,7 @@ fclean: clean
 
 .PHONY: re
 re: fclean all
+
+.PHONY: test
+test: all
+	@./bin/asm tests/imp.s
