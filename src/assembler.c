@@ -24,13 +24,17 @@ void	assembler(char *file)
 		return ;
 	}
 	ft_memset(&table, 0, sizeof(t_table));
-	table.commands = initqueue();
+	table.commands = deque_init();
+	table.labels = deque_init();
 	if (get_header(&table, fd) && get_bytecode(&table, fd))
 	{
+		//validate program size
+		process_labels(&table);
+		make_cor(file, &table);
+
 		ft_printf("\033[32mCompiled:\033[0m %s\n", file);
-		//make .cor
 	}
-	else
+	else//dynamic error message storing, maybe recreate std exception like behaviour
 		ft_printf("\033[31mError:\033[0m %s %s\n", "Invalid file :", file);
 	close(fd);
 }

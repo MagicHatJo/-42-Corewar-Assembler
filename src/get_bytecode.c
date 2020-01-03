@@ -12,6 +12,60 @@
 
 #include "asm.h"
 
+static uint8_t	encoding_byte(t_line *line)
+{
+	int		i;
+	uint8_t	encode;
+
+	i = -1;
+	while (++i < line->argc)
+	{
+		if (line->param_type[i] == T_REG)
+			encode = REG_CODE;
+		else if (line->param_type[i] == T_DIR)
+			encode = DIR_CODE;
+		else if (line->param_type[i] == T_IND)
+			encode = IND_CODE;
+		else
+			return (0);
+		line->acb |= encode << (6 - (2 * i));
+	}
+	return (1);
+}
+
+static uint8_t	expected_byte_count(t_line *line)
+{
+	int		count;
+	int		i;
+
+	count = 0;
+	if (line->cmd >= 0 && line->cmd < 16)
+		count++;
+	if (g_op_tab[line->cmd].acb)
+		count++;
+	i = -1;
+	while (++i < line->argc)
+	{	
+		if (line->param_type[i] == T_REG)
+			count++;
+		else if (line->param_type[i] == T_DIR)
+			count += (g_op_tab[line->cmd].half_size ? 2 : 4);
+		else if (line->param_type[i] == T_IND)
+			count += 2;
+	}
+	return (count);
+}
+
+static void	add_label(t_table *table, t_line *line)
+{
+	t_lookup *node;
+
+	node = ft_memalloc(sizeof(t_lookup));
+	node->label = ft_strdup(line->label);
+	node->value = line->prior_data;
+	deque_push_back(table->labels, node);
+}
+
 int	get_bytecode(t_table *table, int fd)
 {
 	char	*cmd;
@@ -19,20 +73,27 @@ int	get_bytecode(t_table *table, int fd)
 	t_line	*line;
 	int		i;
 
-	(void)table;
 	i = 1;
 	while (get_next_line(fd, &cmd))
 	{
 		line = ft_memalloc(sizeof(t_line));
+		line->line_number = i;
+		line->prior_data = table->prog_size;
 		sanitize(&cmd);
-		ft_printf("%s\n", cmd);
-
 		while ((token = lexer(cmd)).state != NONE)
 		{
-			ft_printf("token : %d : %s\n", token.state, token.content);
-			//parser(&line, token);
+			ZERO_CHECK(!parser(line, &token));
 		}
-		free(line);
+		if (*cmd != 0)
+		{
+			ZERO_CHECK(!(encoding_byte(line)));
+			table->prog_size += expected_byte_count(line);
+			//validate line - check if number and type of arguments match
+			deque_push_back(table->commands, line);
+			if (line->label)
+				add_label(table, line);
+		}
+		i++;
 		free(cmd);
 	}
 	return (1);

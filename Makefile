@@ -14,18 +14,24 @@ NAME = asm
 
 SRC =	main \
 		valid_extension \
+		valid_number \
 		assembler \
 		get_header \
 		get_bytecode \
-		queue \
 		op \
 		sanitize \
 		lexer \
+		parser \
+		parse_parameter \
+		process_labels \
+		make_cor \
 
 INC =	-I inc \
-		-I ../libft/inc \
+		-I ../lib/libft/inc \
+		-I ../lib/libfd/inc \
 
-LIB =	-L ../libft -lft \
+LIB =	-L ../lib/libft -lft \
+		-L ../lib/libfd -lfd \
 
 VPATH = src
 
@@ -57,19 +63,22 @@ $(OBJ_DIR)/%.o: %.c
 	@$(CC) $(CFLAGS) -MMD -c $< -o $@
 
 $(NAME): $(OBJ)
-	@make -C ../libft
+	@make -C ../lib/libft
+	@make -C ../lib/libfd
 	@mkdir -p $(BIN_DIR)
 	@printf "\033[32mLinking: \033[0m%s\n" $(NAME)
 	@$(CC) $^ $(LDFLAGS) -o $(BIN_DIR)/$@
 
 .PHONY: clean
 clean:
-	@make -C ../libft clean
+	@make -C ../lib/libft clean
+	@make -C ../lib/libfd clean
 	@printf "\033[33mCleaning: \033[0m%s repository\n" $(NAME)
 
 .PHONY: fclean
 fclean: clean
-	@make -C ../libft fclean
+	@make -C ../lib/libft fclean
+	@make -C ../lib/libfd fclean
 	@printf "\033[33mCleaning: \033[0m%s\n" $(BIN_DIR)
 	@rm -rf $(BIN_DIR)
 	@rm -rf $(OBJ_DIR)

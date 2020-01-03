@@ -41,7 +41,17 @@ static t_state	token_state(char *cmd)
 		return (LABEL);
 	if (is_instruction(cmd))
 		return (INSTRUCTION);
-	return (REGISTER);
+	return (PARAMETER);
+}
+
+static void		fix_label(char **label)
+{
+	char*	new_content;
+
+	new_content = ft_strcdup(*label, ':');
+	free(*label);
+	*label = new_content;
+	return ;
 }
 
 t_token			lexer(char* cmd)
@@ -49,12 +59,14 @@ t_token			lexer(char* cmd)
 	static int	i;
 	t_token		token;
 
-	while (cmd[i] && (ft_isspace(cmd[i]) || cmd[i] == ','))
+	while (cmd[i] && (ft_isspace(cmd[i]) || cmd[i] == SEPARATOR_CHAR))
 		i++;
 	token.content = ft_strtok(&cmd[i], "\f\t \n\v\r,");
-	while (cmd[i] && !ft_isspace(cmd[i]) && cmd[i] != ',')
+	while (cmd[i] && !ft_isspace(cmd[i]) && cmd[i] != SEPARATOR_CHAR)
 		i++;
 	token.state = token_state(token.content);
+	if (token.state == LABEL)
+		fix_label(&token.content);
 	if (token.state == NONE)
 		i = 0;
 	return (token);
