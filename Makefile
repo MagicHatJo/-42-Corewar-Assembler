@@ -25,6 +25,7 @@ SRC =	main \
 		parse_parameter \
 		process_labels \
 		make_cor \
+		error \
 
 INC =	-I inc \
 		-I ../lib/libft/inc \

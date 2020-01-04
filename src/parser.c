@@ -18,11 +18,9 @@ static int	parse_instruction(char *cmd)
 
 	i = -1;
 	while (g_op_tab[++i].argc)
-	{
 		if (ft_strequ(cmd, g_op_tab[i].name))
 			return (i);
-	}
-	return (16);//sends it to null error. unsure if needs to be changed
+	return (16);
 }
 
 int			parser(t_line *line, t_token *token)
@@ -41,11 +39,10 @@ int			parser(t_line *line, t_token *token)
 		line->cmd = parse_instruction(token->content);
 	else if (token->state == PARAMETER && token->state >= prev_state)
 	{
-		if (!(parse_parameter(line, token->content)))
-			return (0);
+		ZERO_CHECK(!(parse_parameter(line, token->content)));
 	}
 	else
-		return (0);
+		return (return_error("Invalid token"));
 	prev_state = token->state;
 	return (1);
 }

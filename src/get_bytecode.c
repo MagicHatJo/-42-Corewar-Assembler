@@ -27,7 +27,7 @@ static uint8_t	encoding_byte(t_line *line)
 		else if (line->param_type[i] == T_IND)
 			encode = IND_CODE;
 		else
-			return (0);
+			return (return_error("Invalid encoding byte"));
 		line->acb |= encode << (6 - (2 * i));
 	}
 	return (1);
@@ -56,6 +56,21 @@ static uint8_t	expected_byte_count(t_line *line)
 	return (count);
 }
 
+static int	validate_line(t_line *line)
+{
+	int		i;
+
+	if (line->argc != g_op_tab[line->cmd].argc)
+		return (return_error2(	"Too many arguments on at command >>",
+								g_op_tab[line->cmd].name));
+	i = -1;
+	while (++i < line->argc)
+		if (!(line->param_type[i] & g_op_tab[line->cmd].types[i]))
+			return (return_error2(	"Invalid argument types for command >>",
+									g_op_tab[line->cmd].name));
+	return (1);
+}
+
 static void	add_label(t_table *table, t_line *line)
 {
 	t_lookup *node;
@@ -81,14 +96,12 @@ int	get_bytecode(t_table *table, int fd)
 		line->prior_data = table->prog_size;
 		sanitize(&cmd);
 		while ((token = lexer(cmd)).state != NONE)
-		{
 			ZERO_CHECK(!parser(line, &token));
-		}
 		if (*cmd != 0)
 		{
 			ZERO_CHECK(!(encoding_byte(line)));
 			table->prog_size += expected_byte_count(line);
-			//validate line - check if number and type of arguments match
+			ZERO_CHECK(!validate_line(line));
 			deque_push_back(table->commands, line);
 			if (line->label)
 				add_label(table, line);

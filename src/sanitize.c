@@ -29,7 +29,7 @@ static void	clean_spaces(char **line)
 	free(old);
 }
 
-void	sanitize(char **line)
+void		sanitize(char **line)
 {
 	remove_comments(*line);
 	clean_spaces(line);

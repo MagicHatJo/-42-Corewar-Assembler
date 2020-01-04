@@ -52,7 +52,9 @@ static int	get_comment(char comment[], int fd)
 
 int			get_header(t_table *table, int fd)
 {
-	ZERO_CHECK(!get_name(table->prog_name, fd));
-	ZERO_CHECK(!(get_comment(table->comment, fd)));
+	if (!get_name(table->prog_name, fd))
+		return (return_error("Invalid name format"));
+	if (!(get_comment(table->comment, fd)))
+		return (return_error("Invalid comment format"));
 	return (1);
 }

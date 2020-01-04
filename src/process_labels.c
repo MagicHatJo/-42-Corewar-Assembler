@@ -22,9 +22,8 @@ static uint32_t	calc_num(t_line *line, char *label, t_deque *labels)
 	while (++i < labels->size)
 	{
 		if (ft_strequ(label, ((t_lookup*)(current->content))->label))
-		{
-			return ((uint32_t)(((t_lookup*)(current->content))->value - line->prior_data));
-		}
+			return ((uint32_t)(((t_lookup*)(current->content))->value -
+					line->prior_data));
 		current = current->next;
 	}
 	return (0);
@@ -50,10 +49,7 @@ uint8_t	process_labels(t_table *table)
 					((t_line*)(current->content))->param_label[k],
 					table->labels);
 				if (((t_line*)(current->content))->parameters[k] == 0)
-				{
-					ft_printf("error processing a label\n");
-					return (0);
-				}
+					return (return_error("Label could not be processed"));
 			}
 		}
 		current = current->next;

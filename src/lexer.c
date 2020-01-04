@@ -23,13 +23,10 @@ static int		is_instruction(char *cmd)
 {
 	int		i;
 
-	i = 0;
-	while (g_op_tab[i].name)
-	{
+	i = -1;
+	while (g_op_tab[++i].name)
 		if (ft_strequ(cmd, g_op_tab[i].name))
 			return (1);
-		i++;
-	}
 	return (0);
 }
 
@@ -51,7 +48,6 @@ static void		fix_label(char **label)
 	new_content = ft_strcdup(*label, ':');
 	free(*label);
 	*label = new_content;
-	return ;
 }
 
 t_token			lexer(char* cmd)

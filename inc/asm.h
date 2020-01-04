@@ -92,7 +92,7 @@ extern const t_op	g_op_tab[17];
 /*
 ** Functions
 */
-void	assembler(char* file);
+int		assembler(char* file);
 int		get_header(t_table *table, int fd);
 int		get_bytecode(t_table *table, int fd);
 t_token	lexer(char* cmd);
@@ -106,5 +106,7 @@ void	make_cor(char *file, t_table *table);
 int		valid_extension(char *file, char *ext);
 int		valid_number(char *cmd);
 void	sanitize(char **line);
+int		return_error(char message[]);
+int		return_error2(char m1[], char m2[]);
 
 #endif

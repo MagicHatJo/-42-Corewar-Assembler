@@ -29,7 +29,7 @@ static int	create_file(char *file)
 ** 8 bytes of total byte size of the code portion
 ** COMMENT_LENGTH bytes of comment
 */
-static int	write_header(int fd, char *name, uint64_t total, char *comment)
+static void	write_header(int fd, char *name, uint64_t total, char *comment)
 {
 	uint32_t	magic;
 
@@ -39,10 +39,9 @@ static int	write_header(int fd, char *name, uint64_t total, char *comment)
 	total = ft_swapendian64(total);
 	write(fd, &total, 8);
 	write(fd, comment, COMMENT_LENGTH - 4);
-	return (1);
 }
 
-static int	write_cmd_acb(uint8_t *ptr, uint32_t *offset, t_line *line)
+static void	write_cmd_acb(uint8_t *ptr, uint32_t *offset, t_line *line)
 {
 	uint16_t value;
 
@@ -50,11 +49,10 @@ static int	write_cmd_acb(uint8_t *ptr, uint32_t *offset, t_line *line)
 	if (g_op_tab[line->cmd].acb)
 		value |= line->acb << 8;
 	ft_memcpy(ptr + (*offset), &value, 1 + g_op_tab[line->cmd].acb);
-	(*offset) += 1 + g_op_tab[line->cmd].acb;
-	return (1);
+	*offset += 1 + g_op_tab[line->cmd].acb;
 }
 
-static int	write_parameters(uint8_t *ptr, uint32_t *offset, t_line *line)
+static void	write_parameters(uint8_t *ptr, uint32_t *offset, t_line *line)
 {
 	int			i;
 	uint8_t		one;
@@ -68,7 +66,7 @@ static int	write_parameters(uint8_t *ptr, uint32_t *offset, t_line *line)
 		{
 			one = (uint8_t)line->parameters[i];
 			ft_memcpy(ptr + (*offset), &one, 1);
-			(*offset) += 1;
+			*offset += 1;
 		}
 		else if (line->param_type[i] == T_DIR)
 		{
@@ -77,14 +75,13 @@ static int	write_parameters(uint8_t *ptr, uint32_t *offset, t_line *line)
 				two = (uint16_t)(line->parameters[i]);
 				two = END16(two);
 				ft_memcpy(ptr + (*offset), &two, 2);
-				(*offset) += 2;
+				*offset += 2;
 			}
 			else
 			{
-				four = (uint32_t)(line->parameters[i]);
-				four = ft_swapendian(four);
+				four = ft_swapendian(line->parameters[i]);
 				ft_memcpy(ptr + (*offset), &four, 4);
-				(*offset) += 4;
+				*offset += 4;
 			}
 		}
 		else if (line->param_type[i] == T_IND)
@@ -92,10 +89,9 @@ static int	write_parameters(uint8_t *ptr, uint32_t *offset, t_line *line)
 			two = (uint16_t)(line->parameters[i]);
 			two = END16(two);
 			ft_memcpy(ptr + (*offset), &two, 2);
-			(*offset) += 2;
+			*offset += 2;
 		}
 	}
-	return (1);
 }
 
 void	make_cor(char *file, t_table *table)
@@ -106,7 +102,7 @@ void	make_cor(char *file, t_table *table)
 	uint8_t		*buf;
 	uint32_t	offset;
 
-	buf = ft_memalloc(table->prog_size + 1);//unsure if +1 needed
+	buf = ft_memalloc(table->prog_size);
 	offset = 0;
 	fd = create_file(file);
 	write_header(fd, table->prog_name, table->prog_size, table->comment);
@@ -115,7 +111,7 @@ void	make_cor(char *file, t_table *table)
 	while (++i < table->commands->size)
 	{
 		write_cmd_acb(buf, &offset, ((t_line*)(node->content)));
-		write_parameters(buf, &offset, ((t_line*)(node->content))); // write parameters
+		write_parameters(buf, &offset, ((t_line*)(node->content)));
 		node = node->next;
 	}
 	write(fd, buf, table->prog_size);
