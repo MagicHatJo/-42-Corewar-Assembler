@@ -43,14 +43,14 @@ static t_state	token_state(char *cmd)
 
 static void		fix_label(char **label)
 {
-	char*	new_content;
+	char	*new_content;
 
 	new_content = ft_strcdup(*label, ':');
 	free(*label);
 	*label = new_content;
 }
 
-t_token			lexer(char* cmd)
+t_token			lexer(char *cmd)
 {
 	static int	i;
 	t_token		token;

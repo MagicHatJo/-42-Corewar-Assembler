@@ -22,18 +22,20 @@ static uint32_t	calc_num(t_line *line, char *label, t_deque *labels)
 	while (++i < labels->size)
 	{
 		if (ft_strequ(label, ((t_lookup*)(current->content))->label))
+		{
 			return ((uint32_t)(((t_lookup*)(current->content))->value -
 					line->prior_data));
+		}
 		current = current->next;
 	}
 	return (0);
 }
 
-uint8_t	process_labels(t_table *table)
+uint8_t			process_labels(t_table *table)
 {
 	int		i;
 	int		k;
-	t_node *current;
+	t_node	*current;
 
 	i = -1;
 	current = table->commands->begin;
@@ -41,7 +43,7 @@ uint8_t	process_labels(t_table *table)
 	{
 		k = -1;
 		while (++k < ((t_line*)(current->content))->argc)
-		{	
+		{
 			if (((t_line*)(current->content))->param_label[k])
 			{
 				((t_line*)(current->content))->parameters[k] =

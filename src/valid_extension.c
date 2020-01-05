@@ -19,5 +19,5 @@ int	valid_extension(char *file, char *ext)
 	len = ft_strlen(file) - ft_strlen(ext) - 1;
 	if (len <= 0 || file[len] != '.')
 		return (0);
-	return (ft_strequ(&file[len + 1], ext));		
+	return (ft_strequ(&file[len + 1], ext));
 }

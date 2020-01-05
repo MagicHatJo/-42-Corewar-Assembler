@@ -55,7 +55,7 @@ static int	parse_indirect(t_line *line, char *cmd)
 	return (1);
 }
 
-int	parse_parameter(t_line *line, char *cmd)
+int			parse_parameter(t_line *line, char *cmd)
 {
 	if (*cmd == 0)
 		return (1);

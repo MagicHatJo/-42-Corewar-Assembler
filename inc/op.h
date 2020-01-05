@@ -23,9 +23,9 @@
 
 # define MAX_ARGS_NUMBER		4
 # define MAX_PLAYERS			4
-# define MEM_SIZE				(4 * 1024)
-# define IDX_MOD				(MEM_SIZE / 8)
-# define CHAMP_MAX_SIZE			(MEM_SIZE / 6)
+# define MEM_SIZE				4096
+# define IDX_MOD				512
+# define CHAMP_MAX_SIZE			682
 
 # define COMMENT_CHAR			'#'
 # define LABEL_CHAR				':'
@@ -51,13 +51,10 @@ typedef char	t_arg_type;
 # define T_IND					4
 # define T_LAB					8
 
-# define PROG_NAME_LENGTH		(128)
-# define COMMENT_LENGTH			(2048 + 8)
+# define PROG_NAME_LENGTH		128
+# define COMMENT_LENGTH			2056
 # define COREWAR_EXEC_MAGIC		0xea83f3
 
-# define END16(x)	(((x) << 8) | ((x) >> 8))
-# define END3(x)	(((x) & 0xff0000) >> 8) | (((x) & 0xff00) << 8)
-# define END32(x)	(((x) << 24) | ((x) >> 24) | END3(x))
 # define V_LIMIT	1024
 
 #endif

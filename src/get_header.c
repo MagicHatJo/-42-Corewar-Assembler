@@ -18,15 +18,16 @@ static int	get_name(char prog_name[], int fd)
 	char	*dq;
 	int		i;
 
-	
-	ZERO_CHECK(!get_next_line(fd, &line));
-	ZERO_CHECK(!ft_strnequ(line, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING)));
-	ZERO_CHECK(!(dq = ft_strchr(line, '"')));
+	if (!get_next_line(fd, &line) ||
+		!ft_strnequ(line, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING)) ||
+		!(dq = ft_strchr(line, '"')))
+		return (0);
 	dq++;
 	i = -1;
 	while (dq[++i] && dq[i] != '"' && i < PROG_NAME_LENGTH)
 		prog_name[i] = dq[i];
-	ZERO_CHECK(dq[i] != '"');
+	if (dq[i] != '"')
+		return (0);
 	free(line);
 	return (1);
 }
@@ -37,15 +38,16 @@ static int	get_comment(char comment[], int fd)
 	char	*dq;
 	int		i;
 
-	ZERO_CHECK(!get_next_line(fd, &line));
-	if (!ft_strnequ(line, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING)))
+	if (!get_next_line(fd, &line) ||
+		!ft_strnequ(line, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING)) ||
+		!(dq = ft_strchr(line, '"')))
 		return (0);
-	ZERO_CHECK(!(dq = ft_strchr(line, '"')));
 	dq++;
 	i = -1;
 	while (dq[++i] && dq[i] != '"' && i < COMMENT_LENGTH)
 		comment[i] = dq[i];
-	ZERO_CHECK(dq[i] != '"');
+	if (dq[i] != '"')
+		return (0);
 	free(line);
 	return (1);
 }

@@ -22,9 +22,11 @@ SRC =	main \
 		sanitize \
 		lexer \
 		parser \
+		populate_table \
 		parse_parameter \
 		process_labels \
 		make_cor \
+		write_parameters \
 		error \
 
 INC =	-I inc \

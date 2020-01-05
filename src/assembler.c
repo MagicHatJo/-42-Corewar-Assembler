@@ -50,7 +50,7 @@ int			assembler(char *file)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0 || read(fd, &fd, 0) < 0)
-		return(return_error2(file, "not found"));
+		return (return_error2(file, "not found"));
 	ft_memset(&table, 0, sizeof(t_table));
 	table.commands = deque_init();
 	table.labels = deque_init();

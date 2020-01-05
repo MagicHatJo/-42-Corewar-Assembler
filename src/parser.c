@@ -39,7 +39,8 @@ int			parser(t_line *line, t_token *token)
 		line->cmd = parse_instruction(token->content);
 	else if (token->state == PARAMETER && token->state >= prev_state)
 	{
-		ZERO_CHECK(!(parse_parameter(line, token->content)));
+		if (!(parse_parameter(line, token->content)))
+			return (0);
 	}
 	else
 		return (return_error("Invalid token"));
