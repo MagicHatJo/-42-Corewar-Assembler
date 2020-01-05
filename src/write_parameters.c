@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 22:47:26 by jochang           #+#    #+#             */
-/*   Updated: 2019/09/21 22:47:27 by jochang          ###   ########.fr       */
+/*   Updated: 2020/01/05 12:41:03 by jochang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,6 @@ void	write32(uint8_t *ptr, uint32_t *offset, uint32_t n)
 void	write_parameters(uint8_t *ptr, uint32_t *offset, t_line *line)
 {
 	int			i;
-	uint8_t		one;
-	uint16_t	two;
-	uint32_t	four;
 
 	i = -1;
 	while (++i < line->argc)

@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 22:47:26 by jochang           #+#    #+#             */
-/*   Updated: 2019/09/21 22:47:27 by jochang          ###   ########.fr       */
+/*   Updated: 2020/01/05 12:40:37 by jochang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	write_header(int fd, char *name, uint64_t total, char *comment)
 {
 	uint32_t	magic;
 
-	magic = ft_swapendian(COREWAR_EXEC_MAGIC);
+	magic = ft_swapendian32(COREWAR_EXEC_MAGIC);
 	write(fd, &magic, 4);
 	write(fd, name, PROG_NAME_LENGTH);
 	total = ft_swapendian64(total);

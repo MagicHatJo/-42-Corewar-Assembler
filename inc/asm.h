@@ -6,7 +6,7 @@
 /*   By: jochang <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 21:57:56 by jochang           #+#    #+#             */
-/*   Updated: 2019/09/21 21:57:57 by jochang          ###   ########.fr       */
+/*   Updated: 2020/01/05 12:40:09 by jochang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int				parse_parameter(t_line *line, char *cmd);
 uint8_t			process_labels(t_table *table);
 void			make_cor(char *file, t_table *table);
 void			write_parameters(uint8_t *ptr, uint32_t *offset, t_line *line);
+int				populate_table(t_table *table, t_line *line);
 
 /*
 ** Utility
