@@ -54,4 +54,5 @@
 
 # IDE #
 #######
+.vscode
 .vscode/*
